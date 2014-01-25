@@ -15,4 +15,3 @@ for x in range(10,17)+range(100,170)+range(1000,1700)+range(10000,17000)+range(1
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
-raw_input("Press ENTER to exit.")

@@ -12,11 +12,9 @@ for a in range(5,333333333):
 		sum=sum+3*a+1
 	if a%1000000==0:
 		print a
-		raw_input("Press ENTER to exit.")
 
 print "Answer:", sum
 
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
-raw_input("Press ENTER to exit.")

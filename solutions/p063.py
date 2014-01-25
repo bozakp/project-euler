@@ -8,4 +8,3 @@ print "Answer:", sum(1 if n==len(str(a**n)) else 0 for n in range(1,22) for a in
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
-raw_input("Press ENTER to exit.")
