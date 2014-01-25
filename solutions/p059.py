@@ -29,3 +29,4 @@ for a in range(97,123):
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
+

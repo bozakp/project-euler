@@ -21,3 +21,4 @@ print "Answer:", sum(int(n) for n in str(num+2*den))
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
+

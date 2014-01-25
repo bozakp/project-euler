@@ -63,3 +63,4 @@ print "Answer:", sum(1 for x in e if (score_hand(x[:14])>score_hand(x[15:])))
 
 elapse = time.time()-start
 print "Time(ms):", elapse*1000
+
