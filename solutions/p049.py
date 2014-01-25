@@ -38,21 +38,27 @@ def permute_list(s):
             yield p + other
 
 def run():
+    seen = [False for x in xrange(10001)]
     p = Primes(math.sqrt(10000))
     for i in xrange(1000,10000):
         dig_set = [int(x) for x in str(i)]
         primes = []
         for permute in permute_list(dig_set):
-            if permute < 1000:
+            if permute < 1000 or seen[permute]:
                 continue
             if p.is_prime(permute):
                 primes.append(permute)
-        if len(primes) == 3:
+            seen[permute] = True
+        if len(primes) >= 3:
             primes.sort()
-            if primes[2] - primes[1] == primes[1] - primes[0]:
-                d = primes[0]*10000*10000 + primes[1]*10000 + primes[2]
-                print("Answer: %d" % d)
-                break
+            for j in xrange(len(primes)):
+                for k in xrange(j+1,len(primes)):
+                    for l in xrange(k+1, len(primes)):
+                        if (primes[l] - primes[k] == primes[k] - primes[j]
+                                and primes[j] != 1487):
+                            d = primes[j]*10000*10000 + primes[k]*10000 + primes[l]
+                            print("Answer: %d" % d)
+                            return
 
 def main():
     start = time.time()
