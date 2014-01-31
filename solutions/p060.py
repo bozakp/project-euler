@@ -26,6 +26,11 @@ class Primes:
             i += 1
         return True
 
+    def is_prime_pair(self, n1, n2):
+        return (self.is_prime(concat(n2, n2)) 
+                and self.is_prime(n1)
+                and self.is_prime(n2))
+
 class FiveSet:
     def __init__(self, primes, nums):
         self.p = primes
@@ -46,17 +51,77 @@ class FiveSet:
     def sum(self):
         return sum(x for x in self.nums)
 
+class Compatibles:
+    def __init__(self):
+        self.d = {}
+
+    def add(self, a, b):
+        if a > b:
+            na = b
+            nb = a
+        elif b > a:
+            na = a
+            nb = b
+        else:
+            return
+        if not na in self.d:
+            self.d[na] = set()
+        self.d[na].add(nb)
+
+    def is_comp(self, a, b):
+        if a > b:
+            n1 = b
+            n2 = a
+        elif b > a:
+            n1 = a
+            n2 = b
+        else:
+            return
+        return n2 in self.d[n1]
+
+    def __getitem__(self, i):
+        return self.d[i] if i in self.d else None
+
+def pairs(n):
+    s = str(n)
+    for i in xrange(len(s)-1):
+        yield (int(s[:i+1]), int(s[i+1:]))
+
+def comps(poss, so_far, compatibles, i):
+    if len(so_far) == 5:
+        yield so_far
+    else:
+        li = list(compatibles[i])
+        li.sort()
+        for j in li:
+            so_far.add(j)
+            for cc in comps(poss & compatibles[j], so_far, compatibles, j):
+                yield cc
+            so_far.remove(j)
+
+def find_five_set(comp):
+    keys = [x for x in comp.d.keys()]
+    keys.sort()
+    for i in keys:
+        for cc in comps(comp[i], set(i), comp, i):
+            return cc
+        
+def concat(n1, n2):
+    s1 = str(n1)
+    s2 = str(n2)
+    return int(s1+s2)
+
 def run():
-    p = Primes(30000)
-    for i in xrange(len(p.primes)):
-        for j in xrange(i+1, len(p.primes)):
-            for k in xrange(j+1, len(p.primes)):
-                for l in xrange(k+1, len(p.primes)):
-                    for m in xrange(l+1, len(p.primes)):
-                        five_set = FiveSet(p, [p.primes[x] for x in [i, j, k, l, m]])
-                        if five_set.is_valid():
-                            print("Answer: %d" % five_set.sum())
-                            return
+    primes = Primes(1000000)
+    comp = Compatibles()
+    for p in primes.primes:
+        for ns in pairs(p):
+            n1 = ns[0]
+            n2 = ns[1]
+            if primes.is_prime_pair(n1, n2):
+                comp.add(n1, n2)
+    print(comp.d.keys())
+    print("Answer: %d" % sum(find_five_set(comp)))
 
 def main():
     start = time.time()
