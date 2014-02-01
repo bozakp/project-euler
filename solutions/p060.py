@@ -16,16 +16,21 @@ class Primes:
             else:
                 self.primes.append(a)
             a=a+2
+        self.p_set = set(self.primes)
     
     def is_prime(self, n):
         if n == 1:
             return False
+        if n in self.p_set:
+            return True
         i = 0
         sqrt = math.sqrt(n)
-        while i < len(self.primes) and self.primes[i] <= sqrt:
+        len_primes = len(self.primes)
+        while i < len_primes and self.primes[i] <= sqrt:
             if n % self.primes[i] == 0:
                 return False
             i += 1
+        self.p_set.add(n)
         return True
 
     def is_prime_pair(self, a, b):
@@ -35,26 +40,6 @@ class Primes:
             return False
         return (self.is_prime(int(sa+sb)) 
                 and self.is_prime(int(sb+sa)))
-
-class FiveSet:
-    def __init__(self, primes, nums):
-        self.p = primes
-        self.nums = set(nums)
-
-    def is_valid(self):
-        s = set(self.nums)
-        for a in s:
-            s2 = set(s)
-            s2.remove(a)
-            for b in s2:
-                n1 = int(str(a)+str(b))
-                n2 = int(str(b)+str(a))
-                if not (self.p.is_prime(n1) and self.p.is_prime(n2)):
-                    return False
-        return True
-
-    def sum(self):
-        return sum(x for x in self.nums)
 
 class Compatibles:
     def __init__(self):
@@ -108,13 +93,14 @@ def find_five_set(comp):
             yield cc
         
 def run():
-    primes = Primes(8340)
+    primes = Primes(1000000)
     comp = Compatibles()
     print(len(primes.primes))
-    for i in xrange(len(primes.primes)):
-        print(i)
+    for i in xrange(1052):
+        if i % 100 == 0:
+            print(i)
         a = primes.primes[i]
-        for j in xrange(i+1, len(primes.primes)):
+        for j in xrange(i+1, 1052):
             b = primes.primes[j]
             if primes.is_prime_pair(a, b):
                 comp.add(a, b)
