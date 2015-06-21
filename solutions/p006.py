@@ -1,15 +1,10 @@
-import time
-start = time.time()
+def run():
+    nsum = 0
+    sqsum = 0
+    for a in xrange(1,101):
+        nsum += a
+        sqsum += a*a
+    return nsum*nsum - sqsum
 
-a=0
-sum=0
-sums=0
-while a<100:
-	a=a+1
-	sum=sum+a
-	sums=sums+a*a
-print "Answer:", sum*sum-sums
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

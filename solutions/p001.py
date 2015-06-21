@@ -1,21 +1,16 @@
-import time
-start = time.time()
+def add_multiples(d, max_n):
+    a = 0
+    s = 0
+    while a < max_n:
+        s += a
+        a += d
+    return s
 
-a=3
-sum=0
-while a<1000:
-	sum=sum+a
-	a=a+3
-a=5
-while a<1000:
-	sum=sum+a
-	a=a+5
-a=15
-while a<1000:
-	sum=sum-a
-	a=a+15
-print "Answer:", sum
+def run():
+    sum3 = add_multiples(3, 1000)
+    sum5 = add_multiples(5, 1000)
+    sum15 = add_multiples(15, 1000)
+    return sum3 + sum5 - sum15
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

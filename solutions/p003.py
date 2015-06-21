@@ -1,21 +1,18 @@
-import time
-start = time.time()
-
 import math
-primes=[2,3]
-a=5
-c=600851475143
-while a<math.sqrt(c):
-	for x in primes:
-		if a%x==0:
-			break
-	else:
-		primes.append(a)
-		if c%a==0:
-			c=c/a
-	a=a+2
-print "Answer:", c
+from common import prime
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    global c
+    c = 600851475143
+    mx = math.sqrt(c)
+    def callback(p):
+        global c
+        while c % p == 0:
+            c = c / p
+        if p*p > c:
+            return True
+    prime(max_n=mx, callback=callback)
+    return c
 
+from runner import main
+main(run)

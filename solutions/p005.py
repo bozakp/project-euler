@@ -1,9 +1,17 @@
-import time
-start = time.time()
+def gcd(*numbers):
+    """Return the greatest common divisor of the given integers"""
+    from fractions import gcd
+    return reduce(gcd, numbers)
 
-a=2*2*2*2*3*3*5*7*11*13*17*19
-print "Answer:", a
+def lcm(*numbers):
+    """Return lowest common multiple."""
+    def lcm(a, b):
+        return (a * b) // gcd(a, b)
+    return reduce(lcm, numbers, 1)
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    nums = (x for x in xrange(1,21))
+    return lcm(*nums)
 
+from runner import main
+main(run)

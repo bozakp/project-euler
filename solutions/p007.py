@@ -1,25 +1,17 @@
-import time
-start = time.time()
+from common import prime
 
-import math
-primes=[2,3]
-a=5
-n=2
-while n<10001:
-	b=math.sqrt(a)
-	for x in primes:
-		if a%x==0:
-			break
-		if x>b:
-			primes.append(a)
-			n=n+1
-			break
-	else:
-		primes.append(a)
-		n=n+1
-	a=a+2
-print "Answer:", primes[10000]
+def run():
+    global n_primes, last_prime
+    n_primes = 0
+    last_prime = None
+    def callback(p):
+        global n_primes, last_prime
+        n_primes += 1
+        last_prime = p
+        if n_primes == 10001:
+            return True
+    prime(callback=callback)
+    return last_prime
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

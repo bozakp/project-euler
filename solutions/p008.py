@@ -1,6 +1,3 @@
-import time
-start = time.time()
-
 a="73167176531330624919225119674426574742355349194934\
 96983520312774506326239578318016984801869478851843\
 85861560789112949495459501737958331952853208805511\
@@ -21,15 +18,17 @@ a="73167176531330624919225119674426574742355349194934\
 84580156166097919133875499200524063689912560717606\
 05886116467109405077541002256983155200055935729725\
 71636269561882670428252483600823257530420752963450"
-b=0
-d=0
-while b<995:
-	c=int(a[b])*int(a[b+1])*int(a[b+2])*int(a[b+3])*int(a[b+4])
-	if c>d:
-		d=c
-	b=b+1
-print "Answer:", d
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+N=13
+def run():
+    mx = 0
+    for start in xrange(len(a)-N):
+        prod = 1
+        for i in xrange(start, start+N):
+            prod *= int(a[i])
+        if prod > mx:
+            mx = prod
+    return mx
 
+from runner import main
+main(run)
