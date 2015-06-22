@@ -1,12 +1,9 @@
-import time
-start = time.time()
+def run():
+    s=set([])
+    for a in xrange(2, 101):
+        for b in xrange(2, 101):
+            s.add(pow(a, b))
+    return len(s)
 
-s=set([])
-for a in range(2,101):
-	for b in range(2,101):
-		s=s|set([pow(a,b)])
-print "Answer:", len(s)
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

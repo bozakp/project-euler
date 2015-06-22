@@ -1,23 +1,14 @@
-import time
-start = time.time()
+with open('data/p022_names.txt', 'r') as f:
+    qn = f.read().split(",")
 
-f=open('../Labview/Text Files/names.txt', 'r')
-e=f.read().split(',')
-a=0
-for x in e:
-	e[a]=x[1:-1]
-	a=a+1
-e.sort()
-sum=0
-a=1
-for x in e:
-	w=0
-	for y in x:
-		w=w+ord(y)-64
-	sum=sum+w*a
-	a=a+1
-print "Answer:", sum
+names = [n[1:-1] for n in qn]
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    names.sort()
+    s = 0
+    for i in xrange(len(names)):
+        s += sum(ord(c) - 64 for c in names[i]) * (i + 1)
+    return s
 
+from runner import main
+main(run)

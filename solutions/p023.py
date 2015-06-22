@@ -1,46 +1,21 @@
-import time
-start = time.time()
+from common import d
 
-import math
-def d(x):
-	a=2
-	b=math.sqrt(x)
-	c=1
-	while a<b:
-		if x%a==0:
-			c=c+a+x/a
-		a=a+1
-	if b%1==0:
-		c=c+b
-	return c
-abn=[]
-a=10
-while a<28500:
-	if d(a)>a:
-		abn.append(a)
-	a=a+1
-a=0
-n=[0]
-while a<28500:
-	n.append(1)
-	a=a+1
-a=0
-while a<len(abn):
-	b=0
-	while b<=a:
-		if abn[a]+abn[b]<len(n):
-			n[abn[a]+abn[b]]=0
-		b=b+1
-	a=a+1
-a=0
-sum=0
-while a<len(n):
-	if n[a]==1:
-		sum=sum+a
-	a=a+1
-print "Answer:", sum
+MX_N = 28124
+def run():
+    abn=[]
+    for a in xrange(12, MX_N):
+        if d(a) > a:
+            abn.append(a)
 
+    n = [1] * MX_N
+    n[0] = 0
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+    for a in xrange(len(abn)):
+        for b in xrange(a+1):
+            c = abn[a] + abn[b]
+            if c < len(n):
+                n[c] = 0
+    return sum(a if n[a] else 0 for a in xrange(len(n)))
 
+from runner import main
+main(run)

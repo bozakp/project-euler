@@ -1,15 +1,10 @@
-import time
-start = time.time()
+def run():
+    s=1
+    b=1
+    for a in xrange(1, 501):
+        s += 4*b+20*a
+        b=b+8*a
+    return s
 
-sum=1
-a=1
-b=1
-while a<=500:
-	sum=sum+4*b+20*a
-	b=b+8*a
-	a=a+1
-print "Answer:", sum
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

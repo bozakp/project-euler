@@ -19,10 +19,21 @@ def prime(max_n=sys.maxsize, callback=dummy_fn):
                 break
             if x > b:
                 if new_prime(a):
-                    return
+                    return primes
                 break
         else:
             if new_prime(a):
-                return
+                return primes
         a += 2
-    pass
+    return primes
+
+def d(x):
+    b = math.sqrt(x)
+    c = 1
+    for a in xrange(2, int(b)):
+        if x%a==0:
+            c=c+a+x/a
+    if b % 1 == 0:
+        c = c + int(b)
+    return c
+

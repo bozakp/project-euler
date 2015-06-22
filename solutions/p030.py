@@ -1,18 +1,18 @@
 import time
 start = time.time()
 
-a=2
-sum=0
-while a<360000:
-	b=0
-	for c in str(a):
-		d=int(c)
-		b=b+d*d*d*d*d
-	if b==a:
-		sum=sum+a
-	a=a+1
-print "Answer:", sum
+UPPER_BOUND = (len(str(9**5)) + 1) * 9**5
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    s = 0
+    for a in xrange(2, UPPER_BOUND):
+        b = 0
+        for c in str(a):
+            d = int(c)
+            b += d**5
+        if b == a:
+            s += a
+    return s
 
+from runner import main
+main(run)
