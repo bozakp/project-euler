@@ -1,13 +1,8 @@
-import time
-start = time.time()
-
 import math
-a=str(math.factorial(100))
-sum=0
-for x in a:
-	sum=sum+int(x)
-print "Answer:", sum
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    ss = str(math.factorial(100))
+    return sum(int(c) for c in ss)
 
+from runner import main
+main(run)
