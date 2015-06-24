@@ -1,18 +1,13 @@
-import time
-start = time.time()
+def run():
+    dfacts = [0] * 10
+    for i in xrange(len(dfacts)):
+        dfacts[i] = math.factorial(i)
+    MX = dfacts[9] * len(str(dfacts[9]))
+    s = 0
+    for a in xrange(3, MX):
+        if sum(dfacts[int(c)] for c in str(a)) == a:
+            s += a
+    return s
 
-import math
-a=3
-sum=0
-while a<2000000:
-	b=0
-	for c in str(a):
-		b=b+math.factorial(int(c))
-	if b==a:
-		sum=sum+a
-	a=a+1
-print "Answer:", sum
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

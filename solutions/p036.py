@@ -1,14 +1,11 @@
-import time
-start = time.time()
+def run():
+    s = 0
+    for a in xrange(10**6):
+        b = bin(a)[2:]
+        sa = str(a)
+        if sa == sa[::-1] and b == b[::-1]:
+            s += a
+    return s
 
-a=1
-sum=0
-while a<1000000:
-	if str(a)==str(a)[::-1] and bin(a)[2:]==bin(a)[2:][::-1]:
-		sum=sum+a
-	a=a+1
-print "Answer:", sum
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

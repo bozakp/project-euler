@@ -21,7 +21,6 @@ def isprime(n):
 	while n>=primes[a]**2:
 		if n%primes[a]==0:
 			return False
-			break
 		a=a+1
 	return True
 num=0

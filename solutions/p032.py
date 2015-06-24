@@ -1,17 +1,20 @@
-import time
-start = time.time()
+def run():
+    pds = set([])
+    for a in xrange(2, 100):
+        b = a + 1
+        sa = str(a)
+        while True:
+            c = a * b
+            sb = str(b)
+            sc = str(c)
+            s = sa + sb + sc
+            if len(s) >= 10:
+                break
+            if set(s) == set("123456789"):
+                pds.add(c)
+            b += 1
+    return sum(x for x in pds)
 
-a=2
-s=set([])
-while a<100:
-	b=a+1
-	while len(str(b*a)+str(a)+str(b))<10:
-		if set(str(a)+str(b)+str(a*b))==set("123456789"):
-			s=s|set([a*b])
-		b=b+1
-	a=a+1
-print "Answer:", sum(x for x in s)
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

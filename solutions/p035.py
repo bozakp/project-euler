@@ -1,53 +1,25 @@
-import math
-import time
-
-class Primes:
-    def __init__(self, N):
-        self.primes=[2,3]
-        a=5
-        while a < N:
-            b=math.sqrt(a)
-            for x in self.primes:
-                if a%x==0:
-                    break
-                if x>b:
-                    self.primes.append(a)
-                    break
-            else:
-                self.primes.append(a)
-            a=a+2
-    
-    def is_prime(self, n):
-        i = 0
-        sqrt = math.sqrt(n)
-        while i < len(self.primes) and self.primes[i] <= sqrt:
-            if n % self.primes[i] == 0:
-                return False
-            i += 1
-        return True
-        
-def permute_digits(n):
+from common import prime
+def rotations(n):
     s = str(n)
     for i in xrange(len(s)):
         yield int(s[i:]+s[:i])
 
 def run():
-    N = 1000000
-    p = Primes(int(math.sqrt(N)))
+    MX = 10**6
+    primes = prime(max_n=math.sqrt(MX))
+    def is_prime(x):
+        i = 0
+        sqrt = math.sqrt(x)
+        while i < len(primes) and primes[i] <= sqrt:
+            if x % primes[i] == 0:
+                return False
+            i += 1
+        return True
     c = 1  # already counting '2'
-    i = 3
-    while i < N:
-        if all(p.is_prime(x) for x in permute_digits(i)):
+    for n in xrange(3, MX, 2):
+        if all(is_prime(rot) for rot in rotations(n)):
             c += 1
-        i += 2
-    print("Answer: %d" % c)    
+    return c
 
-def main():
-    start = time.time()
-    run()
-    elapse = time.time()-start
-    print "Time(ms):", elapse*1000
-    
-if __name__ == "__main__":
-    main()
-
+from runner import main
+main(run)

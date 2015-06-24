@@ -1,17 +1,27 @@
-import time
-start = time.time()
+class CoinGen:
+    def __init__(self, val):
+        self.val = val
 
-z=0
-for a in range(0,2):
-	for b in range(0, (200-200*a)/100+1):
-		for c in range(0, (200-200*a-100*b)/50+1):
-			for d in range(0, (200-200*a-100*b-50*c)/20+1):
-				for e in range(0, (200-200*a-100*b-50*c-20*d)/10+1):
-					for f in range(0, (200-200*a-100*b-50*c-20*d-10*e)/5+1):
-						for g in range(0, (200-200*a-100*b-50*c-20*d-10*e-5*f)/2+1):
-							z=z+1
-print "Answer:", z
+    def gen(self, other_gen, max, last):
+        for other in other_gen:
+            if last and self.val == 1:
+                # When only the 1s piece remains, there's guaranteed to be one
+                # solution to make 200, even if it's 0 pieces.
+                yield 1
+            else:
+                for i in xrange((max - other) / self.val + 1):
+                    yield other + self.val * i
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    gens = list(reversed([CoinGen(x) for x in [1, 2, 5, 10, 20, 50, 100, 200]]))
+    gg = (0 for x in xrange(1))  # initial seed
+    MX = 200
+    for i in xrange(len(gens)):
+        if i == len(gens) - 1:
+            gg = gens[i].gen(gg, MX, True)
+        else:
+            gg = gens[i].gen(gg, MX, False)
+    return sum(c for c in gg)
 
+from runner import main
+main(run)
