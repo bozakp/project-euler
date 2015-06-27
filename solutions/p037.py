@@ -1,46 +1,34 @@
-import time
-start = time.time()
+from common import prime
 
-import math
-primes=[2,3]
-a=5
-while a<10000:
-	b=math.sqrt(a)
-	for x in primes:
-		if a%x==0:
-			break
-		if x>b:
-			primes.append(a)
-			break
-	else:
-		primes.append(a)
-	a=a+2
+def run():
+    primes = prime(max_n=10000)
+    def is_prime(n):
+        a = 0
+        while n >= primes[a]**2:
+            if n % primes[a]==0:
+                return False
+            a=a+1
+        return True
+    n_found = 0
+    s = 0
+    a = 11
+    while n_found < 11:
+        starts_prime = int(str(a)[0]) in [2, 3, 5, 7]
+        ends_prime = int(str(a)[-1]) in [3, 5, 7]
+        middle_even = any(True for y in str(a)[1:-1] if int(y) in [0, 2, 4, 6, 8])
+        if starts_prime and ends_prime and not middle_even:
+            for b in range(len(str(a))):
+                if b==0:
+                    if not is_prime(a):
+                        break
+                else:
+                    if (not is_prime(int(str(a)[b:]))) or (not is_prime(int(str(a)[:-b]))):
+                        break
+            else:
+                s += a
+                n_found += 1
+        a=a+2
+    return s
 
-def isprime(n):
-	a=0
-	while n>=primes[a]**2:
-		if n%primes[a]==0:
-			return False
-		a=a+1
-	return True
-num=0
-a=11
-sum=0
-while num<11:
-	if int(str(a)[0]) in [2,3,5,7] and int(str(a)[-1]) in [3,5,7] and  not any(True for y in str(a)[1:] if y in [2,4,6,8,0]):
-		for b in range(len(str(a))):
-			if b==0:
-				if not isprime(a):
-					break
-			else:
-				if (not isprime(int(str(a)[b:]))) or (not isprime(int(str(a)[:-b]))):
-					break
-		else:
-			sum=sum+a
-			num=num+1
-	a=a+2
-print "Answer:", sum
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

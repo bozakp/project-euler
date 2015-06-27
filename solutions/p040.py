@@ -1,14 +1,16 @@
-import time
-start = time.time()
+import operator
 
-a=1
-s="0"
-while len(s)<1000002:
-	s=s+str(a)
-	a=a+1
-ans=int(s[1])*int(s[10])*int(s[100])*int(s[1000])*int(s[10000])*int(s[100000])*int(s[1000000])
-print "Answer:", ans
+def prod(iterable):
+    return reduce(operator.mul, iterable, 1)
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
+def run():
+    a = 1
+    s = "0"
+    while len(s) < 1000002:
+        s += str(a)
+        a += 1
+    ns = [10**i for i in xrange(7)]
+    return prod(int(s[n]) for n in ns)
 
+from runner import main
+main(run)
