@@ -1,3 +1,5 @@
+import math
+
 def run():
     dfacts = [0] * 10
     for i in xrange(len(dfacts)):

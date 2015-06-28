@@ -1,4 +1,6 @@
+import math
 from common import prime
+
 def rotations(n):
     s = str(n)
     for i in xrange(len(s)):
