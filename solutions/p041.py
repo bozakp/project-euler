@@ -1,62 +1,29 @@
 import math
-import time
-
-class Primes:
-    def __init__(self, N):
-        self.primes=[2,3]
-        a=5
-        while a < N:
-            b=math.sqrt(a)
-            for x in self.primes:
-                if a%x==0:
-                    break
-                if x>b:
-                    self.primes.append(a)
-                    break
-            else:
-                self.primes.append(a)
-            a=a+2
-    
-    def is_prime(self, n):
-        i = 0
-        sqrt = math.sqrt(n)
-        while i < len(self.primes) and self.primes[i] <= sqrt:
-            if n % self.primes[i] == 0:
-                return False
-            i += 1
-        return True
-
-def permute_set(s):
-    if len(s) == 0:
-        yield 0
-        return
-    for i in s:
-        s2 = set(s)
-        s2.remove(i)
-        p = i * (10 ** (len(s) - 1))
-        for other in permute_set(s2):
-            yield p + other
-        
-def pandigitals(n):
-    s = set(i for i in xrange(1,n+1))
-    for i in permute_set(s):
-        yield i
+from common import prime
+from itertools import permutations
 
 def run():
-    p = Primes(math.sqrt(987654321))
-    max_p = 0
-    for n in xrange(4,10):
-        for i in pandigitals(n):
-            if p.is_prime(i) and i > max_p:
-                max_p = i
-    print("Answer: %d" % max_p)
-        
-def main():
-    start = time.time()
-    run()
-    elapse = time.time()-start
-    print "Time(ms):", elapse*1000
-    
-if __name__ == "__main__":
-    main()
+    prime_max = math.sqrt(987654321)
+    primes = prime(max_n=prime_max)
+    def is_prime(n):
+        a = 0
+        while n >= primes[a]**2:
+            if n % primes[a]==0:
+                return False
+            a=a+1
+        return True
+    max_pan_prime = 0
+    for n_digits in xrange(4,10):
+        s = set(xrange(1, n_digits))
+        for perm in permutations(s):
+            i = 0
+            n = 0
+            for p in perm:
+                n += 10 ** i * p
+                i += 1
+            if is_prime(n) and n > max_pan_prime:
+                max_pan_prime = n
+    return max_pan_prime
 
+from runner import main
+main(run)

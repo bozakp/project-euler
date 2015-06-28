@@ -1,21 +1,19 @@
-import time
-start = time.time()
+from itertools import permutations
 
-s=set([0,1,2,3,4,5,6,7,8,9])
-sum=0
-for a in s:
-	for b in (s-set([a])):
-		for c in (s-set([a,b])):
-			for d in (s-set([a,b,c])):
-				for e in (s-set([a,b,c,d])):
-					for f in (s-set([a,b,c,d,e])):
-						for g in (s-set([a,b,c,d,e,f])):
-							for h in (s-set([a,b,c,d,e,f,g])):
-								for i in (s-set([a,b,c,d,e,f,g,h])):
-									if int(str(b)+str(c)+str(d))%2==0 and int(str(c)+str(d)+str(e))%3==0 and int(str(d)+str(e)+str(f))%5==0 and int(str(e)+str(f)+str(g))%7==0 and int(str(f)+str(g)+str(h))%11==0 and int(str(g)+str(h)+str(i))%13==0 and int(str(h)+str(i)+str(list(s-set([a,b,c,d,e,f,g,h,i]))[0]))%17==0:
-										sum = sum + int(str(a)+str(b)+str(c)+str(d)+str(e)+str(f)+str(g)+str(h)+str(i)+str(list(s-set([a,b,c,d,e,f,g,h,i]))[0]))
-print "Answer:", sum
+def run():
+    all_digits = set(xrange(10))
+    s = 0
+    for perm in permutations(all_digits):
+        n_str = "".join(str(x) for x in perm)
+        if (int(n_str[1:4]) % 2 == 0 and
+            int(n_str[2:5]) % 3 == 0 and
+            int(n_str[3:6]) % 5 == 0 and
+            int(n_str[4:7]) % 7 == 0 and
+            int(n_str[5:8]) % 11 == 0 and
+            int(n_str[6:9]) % 13 == 0 and
+            int(n_str[7:10]) % 17 == 0):
+            s += int(n_str)
+    return s
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

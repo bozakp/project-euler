@@ -1,71 +1,34 @@
 import math
-import time
-
-class Primes:
-    def __init__(self, N):
-        self.primes=[2,3]
-        a=5
-        while a < N:
-            b=math.sqrt(a)
-            for x in self.primes:
-                if a%x==0:
-                    break
-                if x>b:
-                    self.primes.append(a)
-                    break
-            else:
-                self.primes.append(a)
-            a=a+2
-    
-    def is_prime(self, n):
-        i = 0
-        sqrt = math.sqrt(n)
-        while i < len(self.primes) and self.primes[i] <= sqrt:
-            if n % self.primes[i] == 0:
-                return False
-            i += 1
-        return True
-
-def permute_list(s):
-    if len(s) == 0:
-        yield 0
-        return
-    for i in s:
-        s2 = list(s)
-        s2.remove(i)
-        p = i * (10 ** (len(s) - 1))
-        for other in permute_list(s2):
-            yield p + other
+from common import prime
+from itertools import combinations, permutations
 
 def run():
-    seen = [False for x in xrange(10001)]
-    p = Primes(math.sqrt(10000))
-    for i in xrange(1000,10000):
-        dig_set = [int(x) for x in str(i)]
-        primes = []
-        for permute in permute_list(dig_set):
-            if permute < 1000 or seen[permute]:
+    seen = [False] * 10000
+    primes = prime(math.sqrt(10000))
+    def is_prime(n):
+        a = 0
+        while a < len(primes) and n >= primes[a]**2:
+            if n % primes[a]==0:
+                return False
+            a=a+1
+        return True
+    for digits in xrange(1000,10000):
+        d_primes = []
+        for perm in permutations(int(d) for d in str(digits)):
+            n = int("".join(str(p) for p in perm))
+            if n < 1000 or seen[n]:
                 continue
-            if p.is_prime(permute):
-                primes.append(permute)
-            seen[permute] = True
-        if len(primes) >= 3:
-            primes.sort()
-            for j in xrange(len(primes)):
-                for k in xrange(j+1,len(primes)):
-                    for l in xrange(k+1, len(primes)):
-                        if (primes[l] - primes[k] == primes[k] - primes[j]
-                                and primes[j] != 1487):
-                            d = primes[j]*10000*10000 + primes[k]*10000 + primes[l]
-                            print("Answer: %d" % d)
-                            return
+            if is_prime(n):
+                d_primes.append(n)
+            seen[n] = True
+        if len(d_primes) >= 3:
+            d_primes.sort()
+            for dps in combinations(d_primes, 3):
+                a = dps[0]
+                b = dps[1]
+                c = dps[2]
+                if (c - b == b - a) and a != 1487:
+                    return a * 10000**2 + b * 10000 + c
 
-def main():
-    start = time.time()
-    run()
-    elapse = time.time()-start
-    print "Time(ms):", elapse*1000
-    
-if __name__ == "__main__":
-    main()
-
+from runner import main
+main(run)

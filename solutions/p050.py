@@ -1,55 +1,35 @@
-import time
-start = time.time()
+from common import prime
 
-import math
-primes=[2,3]
-a=5
-while a<70000:
-	b=math.sqrt(a)
-	for x in primes:
-		if a%x==0:
-			break
-		if x>b:
-			primes.append(a)
-			break
-	else:
-		primes.append(a)
-	a=a+2
+def run():
+    primes = prime(70000)
+    def is_prime(n):
+        a=0
+        while n>=primes[a]**2:
+            if n%primes[a]==0:
+                return False
+                break
+            a=a+1
+        return True
+    MIN_PRIME_SUM_LEN = 21
+    start = 0
+    mx_psum = 0
+    while start < len(primes) - 200:
+        psum = 0
+        offset = 0
+        while offset < MIN_PRIME_SUM_LEN:
+            psum += primes[start + offset]
+            offset += 1
+            if psum >= 1000000:
+                start = len(primes)
+                break
+        while psum < 1000000:
+            psum += primes[start + offset]
+            offset += 1
+            if is_prime(psum):
+                MIN_PRIME_SUM_LEN = offset
+                mx_psum = psum
+        start += 1
+    return mx_psum
 
-def isprime(n):
-	a=0
-	while n>=primes[a]**2:
-		if n%primes[a]==0:
-			return False
-			break
-		a=a+1
-	return True
-
-sum=0
-n=15
-m=0
-b=0
-c=0
-while b<(len(primes)-200):
-	while m<n:
-		sum=sum+primes[b+m]
-		m=m+1
-		if sum>1000000:
-			b=len(primes)
-			break
-	while sum<1000000:
-		sum=sum+primes[b+m]
-		m=m+1
-		if isprime(sum):
-			n=m
-			c=sum
-	b=b+1
-	sum=0
-	m=0
-print "Answer:", c
-
-
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

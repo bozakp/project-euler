@@ -1,26 +1,17 @@
-import time
-start = time.time()
+def run():
+    with open("data/p042_words.txt", "r") as f:
+        e = f.read().split(",")
+    for a in xrange(len(e)):
+        e[a] = e[a][1:-1]  # strip quotes
+    t = [(a+1) * a/2 for a in xrange(500)]
+    n = 0
+    for word in e:
+        w = 0
+        for c in word:
+            w += ord(c) - 64
+        if t.count(w) > 0:
+            n += 1
+    return n
 
-f=open('../Labview/Text Files/words.txt', 'r')
-e=f.read().split(',')
-a=0
-for x in e:
-	e[a]=x[1:-1]
-	a=a+1
-a=0
-t=[]
-while a<500:
-	t.append((a+1)*a/2)
-	a=a+1
-n=0
-for x in e:
-	w=0
-	for y in x:
-		w=w+ord(y)-64
-	if t.count(w)>0:
-		n=n+1
-print "Answer:", n
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)
