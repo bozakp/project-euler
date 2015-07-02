@@ -4,6 +4,45 @@ import sys
 def dummy_fn(*args):
     pass
 
+class Primes:
+    def __init__(self, callback=dummy_fn):
+        self.primes = [2, 3]
+        self.a = 5  # the next number to check
+        self.callback = callback
+
+    def _new_prime(self, n):
+        """Register a new prime number n"""
+        self.primes.append(n)
+        self.callback(n)
+
+    def generate(self, max_n=sys.maxsize):
+        """Find primes up to max_n. Returns the list of primes
+        when complete"""
+        while self.a < max_n:
+            b = math.sqrt(self.a)
+            for x in self.primes:
+                if self.a % x == 0:
+                    break
+                if x > b:
+                    if self._new_prime(self.a):
+                        return self.primes
+                    break
+            else:
+                if self._new_prime(self.a):
+                    return self.primes
+            self.a += 2
+        return self.primes
+
+    def is_prime(self, n):
+        i = 0
+        sqrt = math.sqrt(n)
+        while i < len(self.primes) and self.primes[i] <= sqrt:
+            if n % self.primes[i] == 0:
+                return False
+            i += 1
+        return True
+
+# TODO: Migrate all code off this function
 def prime(max_n=sys.maxsize, callback=dummy_fn):
     primes = [2, 3]
     a = 5

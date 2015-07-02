@@ -1,18 +1,25 @@
-import time
-start = time.time()
+def same_digits(n):
+    s = str(n)
+    if s[0] > "1" or s[1] > "5":
+        return False
+    l = list(a for a in s)
+    l.sort()
+    for i in xrange(2, 7):
+        ll = list(a for a in str(n * i))
+        ll.sort()
+        if l != ll:
+            return False
+    return True
 
-for x in range(10,17)+range(100,170)+range(1000,1700)+range(10000,17000)+range(100000,170000)+range(1000000,1700000):
-	l = list(a for a in str(x))
-	l.sort()
-	for m in range(2,7):
-		n = list(a for a in str(m*x))
-		n.sort()
-		if n!=l:
-			break
-	else:
-		print "Answer:", x
-		break
+def run():
+    n = 2
+    while True:
+        if same_digits(n):
+            return n
+        n += 1
+        if n > 150000:
+            print("wtf")
+            return
 
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)
