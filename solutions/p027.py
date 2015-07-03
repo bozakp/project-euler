@@ -1,6 +1,6 @@
-from common import prime
+from common import Primes
 
-primes = prime(max_n=50000)
+primes = Primes().generate(50000)
 
 def isprime(z):
     return z in primes

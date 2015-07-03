@@ -1,4 +1,4 @@
-from common import prime
+from common import Primes
 
 def n_prime_factors(primes, n):
     rem = n
@@ -16,8 +16,8 @@ def n_prime_factors(primes, n):
     return c
 
 def run():
-    # FLAG
-    primes = prime(200000)
+    # FLAG: Number needs to be justified
+    primes = Primes().generate(200000)
     streak = 0
     i = 2 * 3 * 5 * 7
     while streak != 4:

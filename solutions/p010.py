@@ -1,4 +1,4 @@
-from common import prime
+from common import Primes
 
 def run():
     global prime_sum
@@ -7,7 +7,7 @@ def run():
         global prime_sum
         prime_sum += p
     max_prime = 2 * 10**6
-    prime(max_n=max_prime, callback=callback)
+    Primes(callback).generate(max_prime)
     return prime_sum
 
 from runner import main

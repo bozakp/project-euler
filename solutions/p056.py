@@ -1,14 +1,11 @@
-import time
-start = time.time()
+from itertools import product
+def run():
+    mx = 0
+    for pair in product(xrange(1, 100), repeat=2):
+        c = sum(int(x) for x in str(pair[0]**pair[1]))
+        if c > mx:
+            mx = c
+    return mx
 
-max=0
-for a in range(70,100):
-	for b in range(70,100):
-		c=sum(int(x) for x in str(a**b))
-		if c>max:
-			max=c
-print "Answer:", max
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)

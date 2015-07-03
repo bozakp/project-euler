@@ -1,14 +1,8 @@
-from common import prime
+from common import Primes
 
 def run():
-    primes = prime(max_n=10000)
-    def is_prime(n):
-        a = 0
-        while n >= primes[a]**2:
-            if n % primes[a]==0:
-                return False
-            a=a+1
-        return True
+    primes = Primes()
+    primes.generate(10000)
     n_found = 0
     s = 0
     a = 11
@@ -19,10 +13,10 @@ def run():
         if starts_prime and ends_prime and not middle_even:
             for b in range(len(str(a))):
                 if b==0:
-                    if not is_prime(a):
+                    if not primes.is_prime(a):
                         break
                 else:
-                    if (not is_prime(int(str(a)[b:]))) or (not is_prime(int(str(a)[:-b]))):
+                    if (not primes.is_prime(int(str(a)[b:]))) or (not primes.is_prime(int(str(a)[:-b]))):
                         break
             else:
                 s += a

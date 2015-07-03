@@ -1,5 +1,5 @@
 import math
-from common import prime
+from common import Primes
 
 def rotations(n):
     s = str(n)
@@ -8,18 +8,11 @@ def rotations(n):
 
 def run():
     MX = 10**6
-    primes = prime(max_n=math.sqrt(MX))
-    def is_prime(x):
-        i = 0
-        sqrt = math.sqrt(x)
-        while i < len(primes) and primes[i] <= sqrt:
-            if x % primes[i] == 0:
-                return False
-            i += 1
-        return True
+    p = Primes()
+    p.generate(math.sqrt(MX))
     c = 1  # already counting '2'
     for n in xrange(3, MX, 2):
-        if all(is_prime(rot) for rot in rotations(n)):
+        if all(p.is_prime(rot) for rot in rotations(n)):
             c += 1
     return c
 

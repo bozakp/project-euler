@@ -1,5 +1,5 @@
 import math
-from common import prime
+from common import Primes
 
 def run():
     global c
@@ -11,7 +11,8 @@ def run():
             c = c / p
         if p*p > c:
             return True
-    prime(max_n=mx, callback=callback)
+    primes = Primes(callback)
+    primes.generate(mx)
     return c
 
 from runner import main

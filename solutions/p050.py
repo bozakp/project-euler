@@ -1,15 +1,8 @@
-from common import prime
+from common import Primes
 
 def run():
-    primes = prime(70000)
-    def is_prime(n):
-        a=0
-        while n>=primes[a]**2:
-            if n%primes[a]==0:
-                return False
-                break
-            a=a+1
-        return True
+    p = Primes()
+    primes = p.generate(70000)
     MIN_PRIME_SUM_LEN = 21
     start = 0
     mx_psum = 0
@@ -25,7 +18,7 @@ def run():
         while psum < 1000000:
             psum += primes[start + offset]
             offset += 1
-            if is_prime(psum):
+            if p.is_prime(psum):
                 MIN_PRIME_SUM_LEN = offset
                 mx_psum = psum
         start += 1

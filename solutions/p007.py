@@ -1,4 +1,4 @@
-from common import prime
+from common import Primes
 
 def run():
     global n_primes, last_prime
@@ -10,7 +10,8 @@ def run():
         last_prime = p
         if n_primes == 10001:
             return True
-    prime(callback=callback)
+    primes = Primes(callback)
+    p = primes.generate()
     return last_prime
 
 from runner import main

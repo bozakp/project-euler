@@ -1,117 +1,63 @@
-import math
-import time
+from common import Primes
+from itertools import combinations
 
-class Primes:
-    def __init__(self, N):
-        self.primes=[2,3]
-        a=5
-        while a < N:
-            b=math.sqrt(a)
-            for x in self.primes:
-                if a%x==0:
-                    break
-                if x>b:
-                    self.primes.append(a)
-                    break
-            else:
-                self.primes.append(a)
-            a=a+2
-        self.p_set = set(self.primes)
-    
-    def is_prime(self, n):
-        if n == 1:
-            return False
-        if n in self.p_set:
-            return True
-        i = 0
-        sqrt = math.sqrt(n)
-        len_primes = len(self.primes)
-        while i < len_primes and self.primes[i] <= sqrt:
-            if n % self.primes[i] == 0:
-                return False
-            i += 1
-        self.p_set.add(n)
-        return True
-
-    def is_prime_pair(self, a, b):
-        sa = str(a)
-        sb = str(b)
-        if (a+b) % 3 == 0:
-            return False
-        return (self.is_prime(int(sa+sb)) 
-                and self.is_prime(int(sb+sa)))
-
-class Compatibles:
+class CompSets:
     def __init__(self):
-        self.d = {}
+        self.comp_sets = dict()
+        self.primes = Primes()
 
-    def add(self, a, b):
-        if not a in self.d:
-            self.d[a] = set()
-        self.d[a].add(b)
+    def is_compatible(self, a, b):
+        return (self.primes.is_prime(int(str(a) + str(b)))
+                and self.primes.is_prime(int(str(b) + str(a))))
 
-    def is_comp(self, a, b):
-        if a > b:
-            n1 = b
-            n2 = a
-        elif b > a:
-            n1 = a
-            n2 = b
-        else:
-            return
-        return n2 in self.d[n1]
+    def add_prime(self, n):
+        new_set = set()
+        for other_prime in self.comp_sets:
+            if self.is_compatible(n, other_prime):
+                self.comp_sets[other_prime].add(n)
+                new_set.add(other_prime)
+        self.comp_sets[n] = new_set
 
-    def __getitem__(self, i):
-        return self.d[i] if i in self.d else None
+    def comp(self, n):
+        return self.comp_sets[n]
 
-def pairs(n):
-    s = str(n)
-    for i in xrange(len(s)-1):
-        sa = s[:i+1]
-        sb = s[i+1:]
-        if sb[0] != "0":
-            yield (int(sa), int(sb))
+    def prime_gen(self):
+        i = 0 # next prime to be added
+        next_prime_mx = 100
+        while True:
+            while i >= len(self.primes.primes):
+                self.primes.generate(next_prime_mx)
+                next_prime_mx += 100
+            while i < len(self.primes.primes):
+                p = self.primes.primes[i]
+                self.add_prime(p)
+                yield p
+                i += 1
 
-def comps(poss, so_far, compatibles):
-    if len(so_far) == 5:
-        yield so_far
-    else:
-        li = list(poss)
-        li.sort()
-        for j in li:
-            if compatibles[j] is not None:
-                so_far.add(j)
-                for cc in comps(poss & compatibles[j], so_far, compatibles):
-                    yield cc
-                so_far.remove(j)
+def find_five(comp_sets):
+    for a in comp_sets.prime_gen():
+        ac = comp_sets.comp(a)
+        for b in sorted(list(ac)):
+            if b >= a:
+                break
+            bc = comp_sets.comp(b)
+            for c in sorted(list(ac.intersection(bc))):
+                if c >= b:
+                    break
+                cc = comp_sets.comp(c)
+                for d in sorted(list(ac.intersection(bc).intersection(cc))):
+                    if d >= c:
+                        break
+                    dc = comp_sets.comp(d)
+                    for e in sorted(list(ac.intersection(bc).intersection(cc).intersection(dc))):
+                        if e >= d:
+                            break
+                        return [a, b, c, d, e]
 
-def find_five_set(comp):
-    keys = [x for x in comp.d.keys()]
-    keys.sort()
-    for i in keys:
-        for cc in comps(comp[i], set([i]), comp):
-            yield cc
-        
 def run():
-    primes = Primes(1000000)
-    comp = Compatibles()
-    print(len(primes.primes))
-    for i in xrange(1052):
-        if i % 100 == 0:
-            print(i)
-        a = primes.primes[i]
-        for j in xrange(i+1, 1052):
-            b = primes.primes[j]
-            if primes.is_prime_pair(a, b):
-                comp.add(a, b)
-    print("Answer: %d" % min(sum(answer_set) for answer_set in find_five_set(comp)))
+    comp_sets = CompSets()
+    result = find_five(comp_sets)
+    return sum(result)
 
-def main():
-    start = time.time()
-    run()
-    elapse = time.time()-start
-    print "Time(ms):", elapse*1000
-
-if __name__ == "__main__":
-    main()
-
+from runner import main
+main(run)

@@ -6,14 +6,17 @@ def dummy_fn(*args):
 
 class Primes:
     def __init__(self, callback=dummy_fn):
-        self.primes = [2, 3]
+        self.primes = []
         self.a = 5  # the next number to check
         self.callback = callback
+
+        self._new_prime(2)
+        self._new_prime(3)
 
     def _new_prime(self, n):
         """Register a new prime number n"""
         self.primes.append(n)
-        self.callback(n)
+        return self.callback(n)
 
     def generate(self, max_n=sys.maxsize):
         """Find primes up to max_n. Returns the list of primes
@@ -40,31 +43,9 @@ class Primes:
             if n % self.primes[i] == 0:
                 return False
             i += 1
+            while i >= len(self.primes):
+                self.generate(self.primes[-1] + 100)
         return True
-
-# TODO: Migrate all code off this function
-def prime(max_n=sys.maxsize, callback=dummy_fn):
-    primes = [2, 3]
-    a = 5
-    def new_prime(p):
-        primes.append(p)
-        return callback(p)
-    new_prime(2)
-    new_prime(3)
-    while a < max_n:
-        b = math.sqrt(a)
-        for x in primes:
-            if a % x == 0:
-                break
-            if x > b:
-                if new_prime(a):
-                    return primes
-                break
-        else:
-            if new_prime(a):
-                return primes
-        a += 2
-    return primes
 
 def d(x):
     b = math.sqrt(x)
