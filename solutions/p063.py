@@ -1,11 +1,25 @@
-import time
-start = time.time()
+# max base = 9. 10^N is always longer than N
+# max exponent = 
+# b = a**n
+# log(b) = n log(a)
+# ^ length of b == int(log(b)) + 1
+#             ^ [0, 1)
+# length(b) = int(n log(a) + 1)
+# n = int(n log(a) + 1)
+# n >= n log(a) + 1
+# 1 >= log(a) + 1/n
+# 1 - log(a) >= 1/n
+# n >= 1/(1 - log(a))
+import math
 
-print "Answer:", sum(1 if n==len(str(a**n)) else 0 for n in range(1,22) for a in range(1,10))
+def run():
+    count = 0
+    for a in xrange(1, 10):
+        max_n = 1.0 / (1.0 - math.log10(a))
+        for n in xrange(1, int(max_n+1)):
+            if n == int(n*math.log10(a) + 1):
+                count += 1
+    return count
 
-
-
-
-elapse = time.time()-start
-print "Time(ms):", elapse*1000
-
+from runner import main
+main(run)
